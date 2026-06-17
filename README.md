@@ -177,7 +177,9 @@ The toolbar search filters swatches in real time by hex value, rgba string, or v
 
 ## Troubleshooting
 
-**`sass` compilation fails** — the script falls back to extracting colours from the raw SCSS source. Variables and mixins won't be expanded, but literal colour values will still be captured. Run `npm install` if `sass` isn't installed yet.
+**`sass` compilation fails with "Can't find stylesheet to import"** — this usually means a `@use` or `@import` references an npm package (e.g. `@use "minireset.css/minireset.css"`). The script automatically walks up the directory tree from the SCSS source and passes every `node_modules` folder it finds as a `--load-path` to `sass`. If it still fails, make sure you've run `npm install` (or the equivalent) in the project that owns the SCSS so the packages are physically present on disk.
+
+**`sass` compilation fails for other reasons** — the script falls back to extracting colours from the raw SCSS source. Variables and mixins won't be expanded, but literal colour values will still be captured. Run `npm install` if `sass` isn't installed yet.
 
 **`git clone` fails** — check that `git` is installed and in your `PATH`. For private repos over HTTPS you may need to supply credentials via a `.netrc` file or a credential helper. For SSH URLs, ensure your key is loaded (`ssh-add`).
 

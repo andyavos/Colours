@@ -241,12 +241,44 @@ function findScssFiles(dir) {
 
 // ─── Compile SCSS ─────────────────────────────────────────────────────────────
 
-function compileScss(scssFiles) {
+/**
+ * Walk up from `startDir` collecting every node_modules directory found,
+ * stopping at the filesystem root. Returns an array of absolute paths.
+ * This lets sass resolve packages like `minireset.css` regardless of where
+ * node_modules lives relative to the scss source tree.
+ */
+function findNodeModulesPaths(startDir) {
+  const found = [];
+  let current = path.resolve(startDir);
+  while (true) {
+    const candidate = path.join(current, "node_modules");
+    if (fs.existsSync(candidate)) found.push(candidate);
+    const parent = path.dirname(current);
+    if (parent === current) break; // filesystem root
+    current = parent;
+  }
+  return found;
+}
+
+function compileScss(scssFiles, scssDir) {
+  // Build --load-path flags from every node_modules folder up the tree.
+  // We search from the scss directory itself so monorepo/nested setups work.
+  const nodeModulesPaths = findNodeModulesPaths(scssDir);
+  const loadPathFlags = nodeModulesPaths
+    .map(p => `--load-path="${p}"`)
+    .join(" ");
+
+  if (nodeModulesPaths.length > 0) {
+    console.log(`  node_modules found at:`);
+    nodeModulesPaths.forEach(p => console.log(`    ${p}`));
+  }
+
   const chunks = [];
   for (const file of scssFiles) {
     console.log(`  Compiling : ${path.basename(file)}`);
     try {
-      const css = execSync(`npx sass --no-source-map --style=expanded "${file}"`, {
+      const cmd = `npx sass --no-source-map --style=expanded ${loadPathFlags} "${file}"`;
+      const css = execSync(cmd, {
         encoding: "utf8",
         stdio: ["pipe", "pipe", "pipe"],
       });
@@ -453,7 +485,7 @@ console.log(`  Found ${scssFiles.length} entry file(s)${scssFiles.length === 0 ?
 
 console.log("\n⚙️   Compiling SCSS…");
 const cssText = scssFiles.length > 0
-  ? compileScss(scssFiles)
+  ? compileScss(scssFiles, workingDir)
   : findScssFiles(workingDir)   // fallback: read raw scss text
       .concat(
         fs.readdirSync(workingDir)
