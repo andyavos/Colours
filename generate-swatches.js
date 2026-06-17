@@ -545,7 +545,7 @@ function buildHtml(colours, sourceLabel) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Colour Swatches</title>
+<title>Kleurzoeker</title>
 <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -589,7 +589,7 @@ function buildHtml(colours, sourceLabel) {
 <body>
 <header>
     <div class="header-left">
-        <h1>Colour <span>Swatches</span></h1>
+        <h1>Kleur<span>zoeker</span></h1>
         <p>Source: <strong>${sourceLabel}</strong> · ${now}</p>
     </div>
     <div class="header-right">
