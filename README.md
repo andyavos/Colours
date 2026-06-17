@@ -22,7 +22,7 @@ Compiles SCSS from a **local directory or remote source**, extracts every colour
 
 ## Example
 
-<img width="2904" height="1991" alt="kleurzoeker" src="https://github.com/user-attachments/assets/44fac760-fe3a-401b-af93-cd210bd67770" />
+<img width="2904" height="1991" alt="kleurzoeker" src="https://github.com/user-attachments/assets/c2682267-ba50-457d-9c5d-3d58a72833e1" />
 
 ---
 
