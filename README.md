@@ -20,6 +20,12 @@ Compiles SCSS from a **local directory or remote source**, extracts every colour
 
 ---
 
+## Example
+
+<img width="2904" height="1991" alt="kleurzoeker" src="https://github.com/user-attachments/assets/44fac760-fe3a-401b-af93-cd210bd67770" />
+
+---
+
 ## Requirements
 
 | Tool | Purpose | Required? |
